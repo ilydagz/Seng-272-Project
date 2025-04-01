@@ -15,10 +15,7 @@ public class Teacher extends User {
         task.approveTask(rating);
     }
 
-    // Öğretmen dilekleri onaylayabilir veya reddedebilir
-    public void approveOrRejectWish(Wish wish, String status, int level) {
-        wishManager.approveOrRejectWish(wish.id, status, level);
-    }
+    
 
     // Öğretmen bütçeye puan ekleyebilir
     public void addPointsToBudget(Budget budget, int points) {
