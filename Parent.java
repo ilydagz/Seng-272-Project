@@ -1,18 +1,19 @@
-import java.util.List;
+class Parent extends User {
 
-public class Parent extends User {
-    private TaskManager taskManager;
-
-    public Parent(String name) {
-        super(name);
-        this.taskManager = new TaskManager();
+    public Parent(int id, String name) {
+        super(id, name);
     }
 
-    public void assignTask(Child child, Task task) {
-        taskManager.addTaskToChild(child, task);
+    public void approveTask(Task task, int rating) {
+        // Task onaylama ve rating verme işlemi burada yapılacak
     }
 
-    public void approveChildTask(Child child, int taskId, int rating) {
-        taskManager.approveTask(child, taskId, rating);
+    public void approveWish(Wish wish, int requiredLevel) {
+        // Çocuğun isteğini onaylama işlemi burada yapılacak
+    }
+
+    @Override
+    public void approveTask(Task task) {
+        // Parent için özel onay işlemleri
     }
 }
