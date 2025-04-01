@@ -1,19 +1,27 @@
-class Parent extends User {
+public class Parent extends User {
 
-    public Parent(int id, String name) {
-        super(id, name);
+    public Parent(String id, String name) {
+        super(id, name, "Parent");
     }
 
+    // Veli görev ekleyebilir
+    public void addTask(Task task, TaskManager taskManager) {
+        taskManager.addTask(task);
+        System.out.println("Parent " + name + " added task: " + task);
+    }
+
+    // Veli görev onaylayabilir
     public void approveTask(Task task, int rating) {
-        // Task onaylama ve rating verme işlemi burada yapılacak
+        task.approveTask(rating);
     }
 
-    public void approveWish(Wish wish, int requiredLevel) {
-        // Çocuğun isteğini onaylama işlemi burada yapılacak
+    // Veli bütçeye puan ekleyebilir
+    public void addPointsToBudget(Budget budget, int points) {
+        budget.addPoints(points);
     }
 
-    @Override
-    public void approveTask(Task task) {
-        // Parent için özel onay işlemleri
+    // Veli dilekleri kabul edebilir veya reddedebilir
+    public void approveOrRejectWish(Wish wish, String status, int level) {
+        wishManager.approveOrRejectWish(wish.id, status, level);
     }
 }

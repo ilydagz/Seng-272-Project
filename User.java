@@ -1,41 +1,21 @@
-abstract class User {
-    private int id;
-    private String name;
-    private int level;
-    private int points;
+public class User {
+    protected String id;
+    protected String name;
+    protected String role; // Child, Parent, Teacher
 
-    public User(int id, String name) {
+    public User(String id, String name, String role) {
         this.id = id;
         this.name = name;
-        this.level = 1; // Başlangıçta seviyeyi 1 olarak kabul ediyoruz.
-        this.points = 0; // Başlangıçta puanları 0.
+        this.role = role;
     }
 
-    public int getId() {
-        return id;
+    public String getRole() {
+        return role;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public String toString() {
+        return "User ID: " + id + ", Name: " + name + ", Role: " + role;
     }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    // Abstract method: her tür kullanıcı için farklı bir task onaylama ve görev ekleme yöntemi olacaktır.
-    public abstract void approveTask(Task task);
 }
 

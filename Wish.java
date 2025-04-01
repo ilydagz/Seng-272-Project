@@ -1,75 +1,29 @@
-class Wish {
-    private int id;
+public class Wish {
+    private String wishId;
     private String title;
     private String description;
-    private String dateTimeStart;
-    private String dateTimeEnd;
+    private String startDate;
+    private String startTime;
+    private String endDate;
+    private String endTime;
     private String status;
-    private int requiredLevel;
+    private int level;
 
-    public Wish(int id, String title, String description, String dateTimeStart, String dateTimeEnd) {
-        this.id = id;
+    public Wish(String wishId, String title, String description, String startDate, String startTime, 
+                String endDate, String endTime, String status, int level) {
+        this.wishId = wishId;
         this.title = title;
         this.description = description;
-        this.dateTimeStart = dateTimeStart;
-        this.dateTimeEnd = dateTimeEnd;
-        this.status = "Pending"; // Başlangıçta bekliyor.
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.status = status;
+        this.level = level;
     }
 
     // Getter ve Setter metodları
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDateTimeStart() {
-        return dateTimeStart;
-    }
-
-    public void setDateTimeStart(String dateTimeStart) {
-        this.dateTimeStart = dateTimeStart;
-    }
-
-    public String getDateTimeEnd() {
-        return dateTimeEnd;
-    }
-
-    public void setDateTimeEnd(String dateTimeEnd) {
-        this.dateTimeEnd = dateTimeEnd;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public int getRequiredLevel() {
-        return requiredLevel;
-    }
-
-    public void setRequiredLevel(int requiredLevel) {
-        this.requiredLevel = requiredLevel;
-    }
+    public String getWishId() { return wishId; }
+    public String getTitle() { return title; }
+    public String getStatus() { return status; }
 }
