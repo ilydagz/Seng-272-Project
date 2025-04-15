@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class WishManager {
 	private List<Wish> wishes;
@@ -10,31 +8,35 @@ public class WishManager {
 		wishes = new ArrayList<>();
 	}
 
+	// Processes the information coming from Wishes.txt file and then adds wish to
+	// wishes
 	public void addWishFromFile(String line) {
-		// Çift tırnak içindeki kelimeleri düzgün ayırmak için REGEX kullanıyoruz
+
 		String[] parts = line.split(" (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
+		// We use REGEX for splitting the parts inside the double quotes
+
 		String wishId = parts[0];
-		String title = parts[1].replace("\"", "");
-		String description = parts[2].replace("\"", "");
+		String title = parts[1];
+		String description = parts[2];
 
 		DateRange activityTime = null;
-		if (parts.length == 8) {
-			try {
-				String startDate = parts[3];
-				String startTime = parts[4];
-				String endDate = parts[5];
-				String endTime = parts[6];
-				activityTime = new DateRange(startDate, startTime, endDate, endTime);
-			} catch (Exception e) {
-				System.out.println("Error processing wish: " + e.getMessage());
-				return;
-			}
+		Wish wish;
+		if (parts.length >= 7) {
+
+			String startDate = parts[3];
+			String startTime = parts[4];
+			String endDate = parts[5];
+			String endTime = parts[6];
+			activityTime = new DateRange(startDate, startTime, endDate, endTime);
+			wish = new Wish(wishId, title, description, startDate, startTime, endDate, endTime);
 		}
 
-		Wish wish = new Wish(wishId, title, description, activityTime);
+		else {
+			wish = new Wish(wishId, title, description, activityTime);
+		}
 		wishes.add(wish);
-		System.out.println("\nWish added: " + wish);
+		System.out.println("\nWish created:\n " + wish + "\n");
 	}
 
 	public List<Wish> getWishes() {
@@ -47,6 +49,7 @@ public class WishManager {
 				return wish;
 			}
 		}
+		System.out.println("Wish with ID " + wishId + " not found.\n");
 		return null;
 	}
 }

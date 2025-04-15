@@ -5,12 +5,12 @@ public class BudgetManager {
 		this.totalCoins = 0;
 	}
 
-	// Coins/puan ekler
+	// Add Coins
 	public void addCoins(int amount) {
 		this.totalCoins += amount;
 	}
 
-	// Mevcut coin sayısını alır
+	// Gets the total coins
 	public int getTotalCoins() {
 		return totalCoins;
 	}

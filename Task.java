@@ -8,7 +8,7 @@ public class Task {
 	private String description;
 	private LocalDateTime deadline;
 	private int points;
-	private DateRange activityTime; // TASK2 için
+	private DateRange activityTime; // For TASK2
 
 	private boolean completed;
 	private boolean isApproved;
@@ -23,7 +23,7 @@ public class Task {
 		this.deadline = LocalDateTime.parse(deadlineDate + " " + deadlineTime,
 				DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 		this.points = points;
-		this.activityTime = null; // TASK1 için null bırakıyoruz
+		this.activityTime = null; // Leave it null for TASK1 because it has deadline
 		this.completed = false;
 		this.isApproved = false;
 		this.rating = 0;
@@ -35,7 +35,7 @@ public class Task {
 		this.taskId = taskId;
 		this.title = title;
 		this.description = description;
-		this.deadline = null; // TASK2 için deadline yok
+		this.deadline = null; // No deadline for TASK2 because it has activity time
 		this.points = points;
 		this.activityTime = new DateRange(startDate, startTime, endDate, endTime);
 		this.completed = false;
@@ -43,11 +43,11 @@ public class Task {
 		this.rating = 0;
 	}
 
-	public int getID(int taskId) {
+	public int getId() {
 		return taskId;
 	}
 
-	public String getType(String type) {
+	public String getType() {
 		return type;
 	}
 
@@ -57,10 +57,6 @@ public class Task {
 
 	public boolean isCompleted() {
 		return completed;
-	}
-
-	public int getId() {
-		return taskId;
 	}
 
 	public String getTitle() {

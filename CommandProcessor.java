@@ -1,5 +1,6 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommandProcessor {
 	private Child child;
@@ -11,24 +12,40 @@ public class CommandProcessor {
 	private TaskManager taskManager;
 	private WishManager wishManager;
 
-	// Constructor ekliyoruz
-	public CommandProcessor(TaskManager taskManager, WishManager wishManager) {
-		this.taskManager = taskManager;
-		this.wishManager = wishManager;
-	}
+	// Constructor
 
-	public CommandProcessor(Child child, Parent parent, Teacher teacher, BudgetManager budgetManager) {
+	public CommandProcessor(Child child, Parent parent, Teacher teacher, BudgetManager budgetManager,
+			TaskManager taskManager, WishManager wishManager) {
 		this.child = child;
 		this.parent = parent;
 		this.teacher = teacher;
 		this.budgetManager = budgetManager;
+		this.taskManager = taskManager;
+		this.wishManager = wishManager;
 		this.tasks = new ArrayList<>();
 		this.wishes = new ArrayList<>();
 	}
 
-	// Komutları işlemek için ana metod
+	public static String[] splitCommandLine(String line) {
+		line = line.trim(); // Clean up the spaces at the beginning and at the end
+		List<String> partsList = new ArrayList<>();
+		Pattern pattern = Pattern.compile("\"([^\"]*)\"|(\\S+)");
+		Matcher matcher = pattern.matcher(line);
+
+		while (matcher.find()) {
+			if (matcher.group(1) != null) {
+				partsList.add(matcher.group(1)); // Take inside double quotes
+			} else {
+				partsList.add(matcher.group(2)); // Take the normal words
+			}
+		}
+
+		return partsList.toArray(new String[0]);
+	}
+
+	// Main method to process commands
 	public void processCommand(String commandLine) {
-		String[] parts = commandLine.split(" ");
+		String[] parts = splitCommandLine(commandLine);
 		String command = parts[0];
 
 		switch (command) {
@@ -73,167 +90,178 @@ public class CommandProcessor {
 		}
 	}
 
-	// TASK ekleme
+	// Adding task
 	private void addTask(String[] parts) {
+		if (parts.length < 8) {
+			System.out.println("Not enough task parameters.");
+			return;
+		}
+
 		String type = parts[1];
 		int taskId = Integer.parseInt(parts[2]);
 		String title = parts[3];
 		String description = parts[4];
-		String deadlineDate = parts[5];
-		String deadlineTime = parts[6];
-		int points = Integer.parseInt(parts[7]);
 
 		Task task;
+
 		if (parts.length == 10) {
-			// ADD_TASK2 formatı, başlangıç ve bitiş tarihi eklenmiş
+			// ADD_TASK2 (task with activity time)
 			String startDate = parts[5];
 			String startTime = parts[6];
 			String endDate = parts[7];
 			String endTime = parts[8];
-			points = Integer.parseInt(parts[9]);
+			int points = Integer.parseInt(parts[9]);
+
 			task = new Task(type, taskId, title, description, startDate, startTime, endDate, endTime, points);
+
+		} else if (parts.length == 8) {
+			// ADD_TASK1 
+			String deadlineDate = parts[5];
+			String deadlineTime = parts[6];
+			int points = Integer.parseInt(parts[7]);
+
+			task = new Task(type, taskId, title, description, deadlineDate, deadlineTime, points);
+
+		} else {
+			System.out.println("ınvalid task command format. Number of parts: " + parts.length);
+			return;
 		}
-		task = new Task(type, taskId, title, description, deadlineDate, deadlineTime, points);
 
 		tasks.add(task);
-		if (type.equals("T")) {
-			teacher.approveTask(task, 0); // Öğretmen task eklerken onaylama yapabilir
-		} else if (type.equals("P")) {
-			parent.approveTask(task, 0); // Aile task eklerken onaylama yapabilir
-		}
-		System.out.println("Task added: " + task);
+
+		System.out.println("Task added: " + task + "\n");
 	}
 
-	// Görevleri listeleme
+	// Listing tasks
 	private void listAllTasks(String[] parts) {
 		String filter = parts.length > 1 ? parts[1] : "";
 
 		System.out.println("Listing tasks:");
 		for (Task task : tasks) {
 			if (filter.equals("D")) {
-				// Günlük filtreleme (bu kısım basitçe tüm görevleri listeler)
-				System.out.println(task);
+				// Filters daily
+				System.out.println(task + "\n");
 			} else if (filter.equals("W")) {
-				// Haftalık filtreleme (bu kısım basitçe tüm görevleri listeler)
-				System.out.println(task);
+				// Filters weekly
+				System.out.println(task + "\n");
 			} else {
-				System.out.println(task);
+				System.out.println(task + "\n");
 			}
 		}
 	}
 
-	// Tüm dilekleri listeleme
+	// Listing wishes
 	private void listAllWishes() {
 		System.out.println("Listing all wishes:");
 		for (Wish wish : wishes) {
-			System.out.println(wish);
+			System.out.println(wish + "\n");
 		}
 	}
 
-	// Görev tamamlandı
+	// Task done
 	private void taskDone(String[] parts) {
 		int taskId = Integer.parseInt(parts[1]);
-		Task task = findTaskById(taskId);
+		Task task = taskManager.findTaskById(taskId);
 		if (task != null) {
 			task.markAsCompleted();
-			System.out.println("Task " + taskId + " marked as done.");
+			System.out.println("Task " + taskId + " marked as done.\n");
 		}
 	}
 
-	// Görev onaylama
+	// Checks a task then approves with rating
 	private void taskChecked(String[] parts) {
 		int taskId = Integer.parseInt(parts[1]);
 		int rating = Integer.parseInt(parts[2]);
-		Task task = findTaskById(taskId);
+		Task task = taskManager.findTaskById(taskId);
 		if (task != null) {
 			if (parent != null) {
 				parent.approveTask(task, rating);
 			} else if (teacher != null) {
 				teacher.approveTask(task, rating);
 			}
-			System.out.println("Task " + taskId + " approved with rating " + rating);
+
+			System.out.println("Task " + taskId + " approved with rating " + rating + "\n");
+
 		}
 	}
 
-	// Dilek ekleme
+	// Adding a wish
 	private void addWish(String[] parts) {
-		String wishId = parts[0];
-		String title = parts[1];
-		String description = parts[2];
-		DateRange activityTime = null;
-		if ((parts.length == 8)) {
-			String startDate = parts[3];
-			String startTime = parts[4];
-			String endDate = parts[5];
-			String endTime = parts[6];
-			activityTime = new DateRange(startDate, startTime, endDate, endTime); // Opsiyonel field
+		if (parts.length < 4) {
+			System.out.println("Not enough wish parameters.");
+			return;
 		}
 
-		Wish wish = new Wish(wishId, title, description, activityTime);
+		String wishId = parts[1];
+		String title = parts[2];
+		String description = parts[3];
+
+		DateRange activityTime = null;
+		Wish wish;
+
+		if (parts.length >= 8) {
+			try {
+				//ADD_WISH2 (wish with activity time)
+				String startDate = parts[4];
+				String startTime = parts[5];
+				String endDate = parts[6];
+				String endTime = parts[7];
+				activityTime = new DateRange(startDate, startTime, endDate, endTime);
+				wish = new Wish(wishId, title, description, startDate, startTime, endDate, endTime);
+			} catch (Exception e) {
+				System.out.println("Error: Can not process wish date/time range -> " + e.getMessage());
+				return;
+			}
+		}
+
+		else {
+			//ADD_WISH1 
+			wish = new Wish(wishId, title, description, activityTime);
+		}
 		wishes.add(wish);
-		System.out.println("Wish added: " + wish);
+		System.out.println("Wish added: " + wish + "\n");
 	}
 
-	// Bütçe coin ekleme
+	// Adds coins to the budget
 	private void addBudgetCoin(String[] parts) {
 		int amount = Integer.parseInt(parts[1]);
-		budgetManager.addCoins(amount); // BudgetManager üzerinden coin ekleme
-		System.out.println(amount + " coins added to child's budget.");
+		budgetManager.addCoins(amount); // Coin addition from budgetManager class
+		System.out.println(amount + " coins added to child's budget.\n");
 	}
 
-	// Dilek onaylama
+	// Checks a wish then approves 
 	private void wishChecked(String[] parts) {
 		String wishId = parts[1];
 		String status = parts[2];
 		int level = parts.length > 3 ? Integer.parseInt(parts[3]) : 0;
 
-		Wish wish = findWishById(wishId);
+		// Take the method from wishManager:
+		Wish wish = wishManager.findWishById(wishId); 
 		if (wish != null) {
 			if (status.equals("APPROVED")) {
 				parent.checkWish(wish, true, level);
-				System.out.println("Wish " + wishId + " approved.");
+				System.out.println("Wish " + wishId + " approved.\n");
 			} else if (status.equals("REJECTED")) {
 				parent.checkWish(wish, false, level);
-				System.out.println("Wish " + wishId + " rejected.");
+				System.out.println("Wish " + wishId + " rejected.\n");
 			}
+		} else {
+			System.out.println("Wish with ID " + wishId + " not found.\n"); 
 		}
 	}
 
-	// Bütçeyi yazdırma
+	// Printing the budget
 	private void printBudget() {
-		System.out.println("Child's current budget: " + child.getPoints() + " points.");
+		if (child != null) {
+			System.out.println("Child's current budget: " + child.getBudget() + " coins.\n");
+		} else {
+			System.out.println("Child is not initialized.\n");
+		}
 	}
 
-	// Çocuğun durumunu yazdırma
+	// Prints the status of child (child's level)
 	private void printStatus() {
-		System.out.println("Child's current status: " + child);
+		System.out.println("Child's current status: " + child.getLevel());
 	}
 
-	// ID ile görev bulma
-	private Task findTaskById(int taskId) {
-		if (tasks == null || tasks.isEmpty()) {
-			System.out.println("No tasks available.");
-			return null;
-		}
-		for (Task task : tasks) {
-			if (task.getId() == taskId) {
-				return task;
-			}
-
-		}
-		System.out.println("Task with ID " + taskId + " not found.");
-		return null;
-	}
-
-	// ID ile dilek bulma
-	private Wish findWishById(String wishId) {
-		for (Wish wish : wishes) {
-			if (wish.getId() == wishId) {
-				return wish;
-			}
-
-		}
-		System.out.println("Wish with ID " + wishId + " not found.");
-		return null;
-	}
 }

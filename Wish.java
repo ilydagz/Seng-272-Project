@@ -2,7 +2,7 @@ public class Wish {
 	private String wishId;
 	private String title;
 	private String description;
-	private DateRange activityTime; // WISH2 için
+	private DateRange activityTime; // For WISH2
 	private boolean isApproved;
 	private int requiredLevel;
 
@@ -10,7 +10,7 @@ public class Wish {
 		this.wishId = wishId;
 		this.title = title;
 		this.description = description;
-		this.activityTime = null; // WISH1 için null
+		this.activityTime = null; // Null for WISH1
 		this.isApproved = false;
 		this.requiredLevel = 0;
 	}
@@ -20,7 +20,7 @@ public class Wish {
 		this.wishId = wishId;
 		this.title = title;
 		this.description = description;
-		this.activityTime = new DateRange(startDate, startTime, endDate, endTime);
+		this.activityTime = new DateRange(startDate, startTime, endDate, endTime); // Not null for WISH2 because it has activity time
 		this.isApproved = false;
 		this.requiredLevel = 0;
 	}
@@ -45,7 +45,8 @@ public class Wish {
 	@Override
 	public String toString() {
 		return "Wish ID: " + wishId + ", Title: " + title + ", Description: " + description + ", Activity Time: "
-				+ (activityTime != null ? activityTime : "N/A") + ", Approved: " + isApproved + ", Required Level: "
-				+ requiredLevel;
+				+ (activityTime != null ? activityTime.toString() : "N/A") + ", Approved: " + isApproved
+				+ ", Required Level: " + requiredLevel;
 	}
+
 }

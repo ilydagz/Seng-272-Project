@@ -1,9 +1,4 @@
 public class Teacher {
-	private String name;
-
-	public Teacher(String name) {
-		this.name = name;
-	}
 
 	public Task createTask1(String type, int taskId, String title, String description, String deadlineDate,
 			String deadlineTime, int points) {
@@ -21,8 +16,5 @@ public class Teacher {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return "Teacher: " + name;
-	}
 }
+

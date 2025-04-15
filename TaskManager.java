@@ -17,29 +17,30 @@ public class TaskManager {
 
 		while (matcher.find()) {
 			if (matcher.group(1) != null) {
-				partsList.add(matcher.group(1)); // Çift tırnak içindekileri al
+				partsList.add(matcher.group(1)); // Gets the inside double quotes
 			} else {
-				partsList.add(matcher.group(2)); // Normal kelimeyi al
+				partsList.add(matcher.group(2)); // Take the normal words
 			}
 		}
 
 		return partsList.toArray(new String[0]);
 	}
 
+	// Processes the information coming from Tasks.txt file then adds the task to tasks
 	public void addTaskFromFile(String line) {
 		System.out.println("Task: \n" + line);
 
-		// Gelişmiş Regex ile doğru parçalama
+		
 		String[] parts = splitCommandLine(line);
 
 		try {
-			String type = parts[0]; // "T" veya "P"
+			String type = parts[0]; // "T" or "P"
 			int taskId = Integer.parseInt(parts[1]);
 			String title = parts[2];
 			String description = parts[3];
 
 			Task task;
-			if (parts.length == 10) { // Etkinlik (activity) içeren görevler
+			if (parts.length == 10) { // For tasks that has activity time
 				String startDate = parts[4];
 				String startTime = parts[5];
 				String endDate = parts[6];
@@ -48,7 +49,7 @@ public class TaskManager {
 
 				System.out.println("\nCreating Task with activity time.");
 				task = new Task(type, taskId, title, description, startDate, startTime, endDate, endTime, points);
-			} else if (parts.length == 8) { // Sadece deadline içeren görevler
+			} else if (parts.length == 8) { // For tasks that has deadline
 				String deadlineDate = parts[4];
 				String deadlineTime = parts[5];
 				int points = Integer.parseInt(parts[6]);
@@ -59,7 +60,7 @@ public class TaskManager {
 				throw new IllegalArgumentException("Unexpected number of parameters in task data.");
 			}
 
-			System.out.println("\nTask successfully created: \n" + task);
+			System.out.println("\nTask successfully created \n");
 			tasks.add(task);
 		} catch (Exception e) {
 			System.out.println("Error processing task: " + e.getMessage());
@@ -73,11 +74,16 @@ public class TaskManager {
 	}
 
 	public Task findTaskById(int taskId) {
+		if (tasks == null || tasks.isEmpty()) {
+			System.out.println("No tasks available.\n");
+			return null;
+		}
 		for (Task task : tasks) {
 			if (task.getId() == taskId) {
 				return task;
 			}
 		}
+		System.out.println("Task with ID " + taskId + " not found.\n");
 		return null;
 	}
 }
