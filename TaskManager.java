@@ -26,11 +26,10 @@ public class TaskManager {
 		return partsList.toArray(new String[0]);
 	}
 
-	// Processes the information coming from Tasks.txt file then adds the task to tasks
+	// Processes the information coming from Tasks.txt file then adds the task to
+	// tasks
 	public void addTaskFromFile(String line) {
-		System.out.println("Task: \n" + line);
 
-		
 		String[] parts = splitCommandLine(line);
 
 		try {
@@ -60,8 +59,9 @@ public class TaskManager {
 				throw new IllegalArgumentException("Unexpected number of parameters in task data.");
 			}
 
-			System.out.println("\nTask successfully created \n");
 			tasks.add(task);
+			System.out.println("----------------------------------------"); 
+			System.out.println("\nTask created:\n\n" + task);
 		} catch (Exception e) {
 			System.out.println("Error processing task: " + e.getMessage());
 			e.printStackTrace();

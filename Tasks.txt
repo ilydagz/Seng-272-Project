@@ -1,2 +1,10 @@
 T 101 "Math Homework" "Solve pages 10 to 20" 2025-03-01 15:00 10 PENDING
-P 102 "School Picnic Preparation" "Göksu Park" 2025-03-05 10:00 2025-03-05 12:00 10 PENDING
+P 102 "School Picnic Preparation" "Göksu Park" 2025-03-05 10:00 2025-03-05 12:00 40 PENDING
+T 103 "Science Project" "Complete the volcano model" 2025-03-03 17:30 15 PENDING
+T 104 "Read Book" "Read 30 pages of '1984'" 2025-03-04 20:00 5 PENDING
+P 105 "Visit Museum" "Ankara Rahmi Koç Museum" 2025-03-07 10:00 2025-03-07 12:30 20 PENDING
+P 106 "Team Meeting" "Discuss group presentation" 2025-03-06 14:00 2025-03-06 15:00 10 PENDING
+T 107 "Write Essay" "History of the Internet" 2025-03-05 22:00 20 PENDING
+P 108 "Football Practice" "School field" 2025-03-04 16:00 2025-03-04 17:30 15 PENDING
+T 109 "Prepare Presentation" "Slides for biology class" 2025-03-08 18:00 25 PENDING  
+P 110 "Painting Workshop" "Art classroom - watercolor session" 2025-03-09 13:30 2025-03-09 15:00 30 PENDING

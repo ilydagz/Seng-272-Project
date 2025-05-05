@@ -115,7 +115,7 @@ public class CommandProcessor {
 			task = new Task(type, taskId, title, description, startDate, startTime, endDate, endTime, points);
 
 		} else if (parts.length == 8) {
-			// ADD_TASK1 
+			// ADD_TASK1
 			String deadlineDate = parts[5];
 			String deadlineTime = parts[6];
 			int points = Integer.parseInt(parts[7]);
@@ -128,34 +128,58 @@ public class CommandProcessor {
 		}
 
 		tasks.add(task);
-
-		System.out.println("Task added: " + task + "\n");
+		System.out.println("----------------------------------------");
+		System.out.println("\nTask added:\n" + task + "\n");
 	}
 
 	// Listing tasks
 	private void listAllTasks(String[] parts) {
-		String filter = parts.length > 1 ? parts[1] : "";
+		String filter = parts.length > 1 ? parts[1].toUpperCase() : "ALL";
+		System.out.println("----------------------------------------");
 
-		System.out.println("Listing tasks:");
-		for (Task task : tasks) {
-			if (filter.equals("D")) {
-				// Filters daily
-				System.out.println(task + "\n");
-			} else if (filter.equals("W")) {
-				// Filters weekly
-				System.out.println(task + "\n");
-			} else {
+		// Creating a title because of the filtering and printing it accordingly
+		String title = "Listing all tasks:\n"; // Default title
+		if (filter.equals("D")) {
+			title = "Listing daily tasks:\n";
+		} else if (filter.equals("W")) {
+			title = "Listing weekly tasks:\n";
+		}
+
+		System.out.println(title); // Dynamic title starts here
+		System.out.println("----------------------------------------");
+
+		for (Task task : taskManager.getTasks()) {
+			boolean isTask1 = (task.deadline != null && task.activityTime == null); // TASK1 - daily
+			boolean isTask2 = (task.activityTime != null && task.deadline == null); // TASK2 - weekly
+
+			switch (filter) {
+			case "D": // Daily
+				if (isTask1) {
+					System.out.println(task + "\n");
+				}
+				break;
+			case "W": // Weekly
+				if (isTask2) {
+					System.out.println(task + "\n");
+				}
+				break;
+			case "ALL":
+			default:
 				System.out.println(task + "\n");
 			}
 		}
+		System.out.println("----------------------------------------");
 	}
 
 	// Listing wishes
 	private void listAllWishes() {
-		System.out.println("Listing all wishes:");
-		for (Wish wish : wishes) {
+		System.out.println("----------------------------------------");
+		System.out.println("Listing all wishes:\n");
+		System.out.println("----------------------------------------");
+		for (Wish wish : wishManager.getWishes()) {
 			System.out.println(wish + "\n");
 		}
+		System.out.println("----------------------------------------");
 	}
 
 	// Task done
@@ -201,7 +225,7 @@ public class CommandProcessor {
 
 		if (parts.length >= 8) {
 			try {
-				//ADD_WISH2 (wish with activity time)
+				// ADD_WISH2 (wish with activity time)
 				String startDate = parts[4];
 				String startTime = parts[5];
 				String endDate = parts[6];
@@ -215,11 +239,12 @@ public class CommandProcessor {
 		}
 
 		else {
-			//ADD_WISH1 
+			// ADD_WISH1
 			wish = new Wish(wishId, title, description, activityTime);
 		}
 		wishes.add(wish);
-		System.out.println("Wish added: " + wish + "\n");
+		System.out.println("----------------------------------------");
+		System.out.println("Wish added:\n\n" + wish + "\n");
 	}
 
 	// Adds coins to the budget
@@ -229,24 +254,25 @@ public class CommandProcessor {
 		System.out.println(amount + " coins added to child's budget.\n");
 	}
 
-	// Checks a wish then approves 
+	// Checks a wish then approves
 	private void wishChecked(String[] parts) {
 		String wishId = parts[1];
 		String status = parts[2];
 		int level = parts.length > 3 ? Integer.parseInt(parts[3]) : 0;
 
 		// Take the method from wishManager:
-		Wish wish = wishManager.findWishById(wishId); 
+		Wish wish = wishManager.findWishById(wishId);
 		if (wish != null) {
 			if (status.equals("APPROVED")) {
 				parent.checkWish(wish, true, level);
-				System.out.println("Wish " + wishId + " approved.\n");
+				System.out.println("Wish " + wishId + " approved. Required level: " + level + "\n");
 			} else if (status.equals("REJECTED")) {
 				parent.checkWish(wish, false, level);
+				wishManager.removeWish(wish);
 				System.out.println("Wish " + wishId + " rejected.\n");
 			}
 		} else {
-			System.out.println("Wish with ID " + wishId + " not found.\n"); 
+			System.out.println("Wish with ID " + wishId + " not found.\n");
 		}
 	}
 

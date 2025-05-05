@@ -36,11 +36,16 @@ public class WishManager {
 			wish = new Wish(wishId, title, description, activityTime);
 		}
 		wishes.add(wish);
-		System.out.println("\nWish created:\n " + wish + "\n");
+		System.out.println("----------------------------------------"); 
+		System.out.println("\nWish created:\n\n" + wish);
 	}
 
 	public List<Wish> getWishes() {
 		return wishes;
+	}
+
+	public void removeWish(Wish wish) {
+		wishes.remove(wish);
 	}
 
 	public Wish findWishById(String wishId) {

@@ -6,9 +6,9 @@ public class Task {
 	private int taskId;
 	private String title;
 	private String description;
-	private LocalDateTime deadline;
+	public LocalDateTime deadline;
 	private int points;
-	private DateRange activityTime; // For TASK2
+	public DateRange activityTime; // For TASK2
 
 	private boolean completed;
 	private boolean isApproved;
@@ -76,8 +76,19 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Type: " + type + ", Task ID: " + taskId + ", Title: " + title + ", Description: " + description
-				+ ", Deadline: " + (deadline != null ? deadline : activityTime) + ", Points: " + points
-				+ ", Completed: " + completed + ", Approved: " + isApproved + ", Rating: " + rating;
+	    return "\n=========== TASK ===========\n" +
+	           "Type       : " + type + "\n" +
+	           "Task ID    : " + taskId + "\n" +
+	           "Title      : " + title + "\n" +
+	           "Description: " + description + "\n" +
+	           "Deadline   : " +
+	           (deadline != null ? deadline.toString().replace("T", " ")
+	                             : (activityTime != null ? activityTime.toString() : "N/A")) + "\n" +
+	           "Points     : " + points + "\n" +
+	           "Completed  : " + (completed ? "Yes" : "No") + "\n" +
+	           "Approved   : " + (isApproved ? "Yes" : "No") + "\n" +
+	           "Rating     : " + rating + "\n" +
+	           "============================\n";
 	}
+	
 }

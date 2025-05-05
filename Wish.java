@@ -44,9 +44,14 @@ public class Wish {
 
 	@Override
 	public String toString() {
-		return "Wish ID: " + wishId + ", Title: " + title + ", Description: " + description + ", Activity Time: "
-				+ (activityTime != null ? activityTime.toString() : "N/A") + ", Approved: " + isApproved
-				+ ", Required Level: " + requiredLevel;
+	    return "\n========== WISH ==========\n" +
+	           "Wish ID       : " + wishId + "\n" +
+	           "Title         : " + title + "\n" +
+	           "Description   : " + description + "\n" +
+	           "Activity Time : " + (activityTime != null ? activityTime.toString() : "N/A") + "\n" +
+	           "Approved      : " + (isApproved ? "Yes" : "No") + "\n" +
+	           "Required Level: " + requiredLevel + "\n" +
+	           "==========================\n";
 	}
 
 }
