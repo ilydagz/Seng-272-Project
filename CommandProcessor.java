@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -126,8 +129,17 @@ public class CommandProcessor {
 			System.out.println("ınvalid task command format. Number of parts: " + parts.length);
 			return;
 		}
-
 		tasks.add(task);
+
+	    // Write to file
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter("Tasks.txt", true))) {
+	        writer.write(task.toFileString());  // Format task and write to file
+	        writer.newLine();  // Write a new line after each task
+	    } catch (IOException e) {
+	        System.out.println("Error writing task to file: " + e.getMessage());
+	    }
+	    taskManager.addTask(task);
+	    
 		System.out.println("----------------------------------------");
 		System.out.println("\nTask added:\n" + task + "\n");
 	}
@@ -243,6 +255,15 @@ public class CommandProcessor {
 			wish = new Wish(wishId, title, description, activityTime);
 		}
 		wishes.add(wish);
+		
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("Wishes.txt", true))) {
+	        writer.write(wish.toFileString());  // Format task and write to file
+	        writer.newLine();  // Write a new line after each task
+	    } catch (IOException e) {
+	        System.out.println("Error writing task to file: " + e.getMessage());
+	    } 
+		wishManager.addWish(wish);
+
 		System.out.println("----------------------------------------");
 		System.out.println("Wish added:\n\n" + wish + "\n");
 	}

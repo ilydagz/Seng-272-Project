@@ -1,10 +1,2 @@
 W102 "Lego Set" "Price:150TL, Brand: LEGO" PENDING
 W103 "Go to the Cinema" "Price:100TL" 2025-03-07 14:00 2025-03-07 16:00 PENDING
-W104 "New Bicycle" "Price:800TL, Brand: Bianchi" PENDING  
-W105 "Trip to Zoo" "Price:120TL" 2025-03-10 09:00 2025-03-10 13:00 PENDING  
-W106 "Puzzle Set" "Price:75TL, Brand: Ravensburger" PENDING  
-W107 "Museum Visit" "Price:50TL" 2025-03-12 11:00 2025-03-12 14:00 PENDING  
-W108 "Basketball" "Price:200TL, Brand: Spalding" PENDING  
-W109 "Science Fair Participation" "Price:0TL" 2025-03-15 10:00 2025-03-15 16:00 PENDING  
-W110 "Cooking Workshop" "Price:150TL" 2025-03-17 14:00 2025-03-17 17:00 PENDING  
-W111 "Headphones" "Price:300TL, Brand: Sony" PENDING  

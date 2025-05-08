@@ -57,4 +57,8 @@ public class WishManager {
 		System.out.println("Wish with ID " + wishId + " not found.\n");
 		return null;
 	}
+	
+	public void addWish(Wish wish) {
+		wishes.add(wish);
+	}
 }

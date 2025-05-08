@@ -34,7 +34,8 @@ public class Main {
 			Scanner scanner = new Scanner(file);
 
 			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
+				String line = scanner.nextLine().trim();
+				if (line.isEmpty()) continue;
 				taskManager.addTaskFromFile(line);
 			}
 
@@ -44,6 +45,7 @@ public class Main {
 		}
 	}
 
+
 	// Reading from Wishes.txt
 	private static void readWishesFromFile(String fileName, WishManager wishManager) {
 		try {
@@ -51,7 +53,8 @@ public class Main {
 			Scanner scanner = new Scanner(file);
 
 			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
+				String line = scanner.nextLine().trim();
+				if (line.isEmpty()) continue;
 				wishManager.addWishFromFile(line);
 			}
 
@@ -60,6 +63,7 @@ public class Main {
 			System.out.println("File not found: " + fileName);
 		}
 	}
+
 
 	// Reading from Commands.txt
 	private static void processCommandsFromFile(String fileName, CommandProcessor commandProcessor) {

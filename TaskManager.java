@@ -60,6 +60,8 @@ public class TaskManager {
 			}
 
 			tasks.add(task);
+			
+			
 			System.out.println("----------------------------------------"); 
 			System.out.println("\nTask created:\n\n" + task);
 		} catch (Exception e) {
@@ -71,6 +73,10 @@ public class TaskManager {
 
 	public List<Task> getTasks() {
 		return tasks;
+	}
+	
+	public void addTask(Task task) {
+		tasks.add(task);
 	}
 
 	public Task findTaskById(int taskId) {
